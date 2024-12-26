@@ -14,6 +14,7 @@ public class CreateHarvestCommandHandler(BerrySystemDbContext berrySystemDbConte
         {
             Kilograms = request.Kilograms,
             EmployeeId = request.EmployeeId,
+            EventTime = DateTime.UtcNow,
         };
         
         await berrySystemDbContext.Harvests.AddAsync(harvest, cancellationToken);
