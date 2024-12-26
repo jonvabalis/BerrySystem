@@ -1,6 +1,8 @@
-﻿namespace BerrySystem.Domain.Entities;
+﻿using MediatR;
 
-public class Employee : Entity
+namespace BerrySystem.Core.Commands;
+
+public class CreateEmployeeCommand : IRequest<Guid>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
