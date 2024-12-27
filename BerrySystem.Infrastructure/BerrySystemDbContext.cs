@@ -12,4 +12,5 @@ public class BerrySystemDbContext : DbContext
 
     public DbSet<Harvest> Harvests { get; set; }
     public DbSet<Employee> Employees { get; set; }
+    public DbSet<Sale> Sales { get; set; }
 }

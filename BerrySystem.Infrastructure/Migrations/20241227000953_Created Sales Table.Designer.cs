@@ -4,6 +4,7 @@ using BerrySystem.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BerrySystem.Infrastructure.Migrations
 {
     [DbContext(typeof(BerrySystemDbContext))]
-    partial class BerrySystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241227000953_Created Sales Table")]
+    partial class CreatedSalesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
