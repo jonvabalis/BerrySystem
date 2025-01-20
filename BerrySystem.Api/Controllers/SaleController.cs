@@ -7,14 +7,14 @@ namespace BerrySystem.Api.Controllers;
 
 public class SaleController : BaseController
 {
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<IActionResult> Create(CreateSaleCommand command)
     {
         var result = await Mediator.Send(command);
         return Ok(result);
     }
 
-    [HttpGet]
+    [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll([FromQuery] GetAllSalesQuery query)
     {
         var result = await Mediator.Send(query);

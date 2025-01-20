@@ -6,14 +6,14 @@ namespace BerrySystem.Api.Controllers;
 
 public class EmployeeController : BaseController
 {
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<IActionResult> Create(CreateEmployeeCommand command)
     {
         var result = await Mediator.Send(command);
         return Ok(result);
     }
 
-    [HttpGet]
+    [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll([FromQuery] GetAllEmployeesQuery query)
     {
         var result = await Mediator.Send(query);

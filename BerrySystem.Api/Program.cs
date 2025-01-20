@@ -1,5 +1,4 @@
 using BerrySystem.Core.Commands;
-using BerrySystem.Core.Handlers.Harvest;
 using BerrySystem.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +17,16 @@ builder.Services.AddScoped<DbContext, BerrySystemDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +35,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
