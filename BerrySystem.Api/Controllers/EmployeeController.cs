@@ -19,4 +19,11 @@ public class EmployeeController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
+
+    [HttpGet("Get")]
+    public async Task<IActionResult> GetById([FromQuery] GetByIdEmployeeQuery query)
+    {
+        var result = await Mediator.Send(query);
+        return Ok(result);
+    }
 }
