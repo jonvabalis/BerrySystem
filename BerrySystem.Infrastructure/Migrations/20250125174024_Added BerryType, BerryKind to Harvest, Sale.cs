@@ -21,8 +21,7 @@ namespace BerrySystem.Infrastructure.Migrations
                 name: "BerryTypeId",
                 table: "Sales",
                 type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+                nullable: true);
 
             migrationBuilder.AddColumn<Guid>(
                 name: "BerryKindId",
@@ -34,8 +33,7 @@ namespace BerrySystem.Infrastructure.Migrations
                 name: "BerryTypeId",
                 table: "Harvests",
                 type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+                nullable: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sales_BerryKindId",
@@ -69,8 +67,7 @@ namespace BerrySystem.Infrastructure.Migrations
                 table: "Harvests",
                 column: "BerryTypeId",
                 principalTable: "BerryTypes",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Sales_BerryKinds_BerryKindId",
@@ -84,8 +81,7 @@ namespace BerrySystem.Infrastructure.Migrations
                 table: "Sales",
                 column: "BerryTypeId",
                 principalTable: "BerryTypes",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />

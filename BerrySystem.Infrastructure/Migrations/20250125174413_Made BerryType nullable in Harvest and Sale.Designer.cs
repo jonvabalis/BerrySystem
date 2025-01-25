@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BerrySystem.Infrastructure.Migrations
 {
     [DbContext(typeof(BerrySystemDbContext))]
-    [Migration("20250125170444_Added BerryType, BerryKind to Harvest, Sale")]
-    partial class AddedBerryTypeBerryKindtoHarvestSale
+    [Migration("20250125174413_Made BerryType nullable in Harvest and Sale")]
+    partial class MadeBerryTypenullableinHarvestandSale
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
