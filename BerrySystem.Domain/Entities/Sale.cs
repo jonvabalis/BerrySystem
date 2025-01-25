@@ -10,4 +10,6 @@ public class Sale : Entity
     public Guid EmployeeId { get; set; }
     public SaleType SaleType { get; set; }
     public DateTime? EventTime { get; set; }
+    public BerryType BerryType { get; set; }
+    public BerryKind? BerryKind { get; set; }
 }
