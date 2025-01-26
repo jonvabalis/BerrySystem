@@ -2,7 +2,7 @@
 
 public class BerryKind : Entity
 {
-    public string Kind { get; private set; } = string.Empty;
-    public Guid BerryTypeId { get; private set; }
+    public string Kind { get;  set; } = string.Empty;
+    public Guid BerryTypeId { get; set; }
     public BerryType BerryType { get; private set; }
 }
