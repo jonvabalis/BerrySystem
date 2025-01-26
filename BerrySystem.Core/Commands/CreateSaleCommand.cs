@@ -11,4 +11,6 @@ public class CreateSaleCommand  : IRequest<Guid>
     public Guid EmployeeId { get; set; }
     public SaleType SaleType { get; set; }
     public DateTime? EventTime { get; set; }
+    public Guid BerryTypeId { get; set; }
+    public Guid? BerryKindId { get; set; }
 }
