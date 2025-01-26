@@ -16,7 +16,7 @@ public class CreateHarvestCommandHandler(BerrySystemDbContext berrySystemDbConte
         if (berryType == null)
             throw new Exception($"BerryType with ID {request.BerryTypeId} not found.");
 
-        BerryKind? berryKind = null;
+        Domain.Entities.BerryKind? berryKind = null;
         if (request.BerryKindId.HasValue)
         {
             berryKind = await berrySystemDbContext.BerryKinds
