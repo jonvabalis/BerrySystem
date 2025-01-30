@@ -16,4 +16,5 @@ public class BerrySystemDbContext : DbContext
     
     public DbSet<BerryType> BerryTypes { get; set; }
     public DbSet<BerryKind> BerryKinds { get; set; }
+    public DbSet<Cost> Costs { get; set; }
 }
