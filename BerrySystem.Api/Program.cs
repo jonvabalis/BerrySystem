@@ -1,4 +1,6 @@
 using BerrySystem.Core.Commands;
+using BerrySystem.Core.Services;
+using BerrySystem.Core.Services.Interfaces;
 using BerrySystem.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<BerrySystemDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<DbContext, BerrySystemDbContext>();
+builder.Services.AddScoped<IStatisticsHelperService, StatisticsHelperService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
