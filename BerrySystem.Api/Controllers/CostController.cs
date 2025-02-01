@@ -19,7 +19,7 @@ public class CostController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpGet("GetCostsSum")]
     public async Task<IActionResult> GetAll([FromQuery] GetCostsSumQuery query)
     {

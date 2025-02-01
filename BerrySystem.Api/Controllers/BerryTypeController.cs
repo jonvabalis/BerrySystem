@@ -26,7 +26,7 @@ public class BerryTypeController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpGet("GetByName")]
     public async Task<IActionResult> GetByName([FromQuery] GetByNameBerryTypeQuery query)
     {

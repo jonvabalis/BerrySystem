@@ -6,28 +6,28 @@ namespace BerrySystem.Api.Controllers;
 public class StatisticsController : BaseController
 {
     [HttpGet("GetCollectionStatisticsAllTime")]
-    public async Task<IActionResult> Create([FromQuery] GetCollectionStatisticsAllTimeQuery query)
+    public async Task<IActionResult> GetCollectionStatisticsAllTime([FromQuery] GetCollectionStatisticsAllTimeQuery query)
     {
         var result = await Mediator.Send(query);
         return Ok(result);
     }
 
     [HttpGet("GetCollectionStatisticsFiltered")]
-    public async Task<IActionResult> GetAll([FromQuery] GetCollectionStatisticsFilteredQuery query)
+    public async Task<IActionResult> GetCollectionStatisticsFiltered([FromQuery] GetCollectionStatisticsFilteredQuery query)
     {
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpGet("GetCostsStatisticsAllTime")]
-    public async Task<IActionResult> Create([FromQuery] GetCostsStatisticsAllTimeQuery query)
+    public async Task<IActionResult> GetCostsStatisticsAllTime([FromQuery] GetCostsStatisticsAllTimeQuery query)
     {
         var result = await Mediator.Send(query);
         return Ok(result);
     }
 
     [HttpGet("GetCostsStatisticsFiltered")]
-    public async Task<IActionResult> GetAll([FromQuery] GetCostsStatisticsFilteredQuery query)
+    public async Task<IActionResult> GetCostsStatisticsFiltered([FromQuery] GetCostsStatisticsFilteredQuery query)
     {
         var result = await Mediator.Send(query);
         return Ok(result);
