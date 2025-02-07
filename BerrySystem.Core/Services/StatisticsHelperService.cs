@@ -70,6 +70,7 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
         var timeSettingSelector = DateTimeExtensions.TimeSettingSelector(timeSettingType);
         
         var costDataSum = new Dictionary<int, CostsSum>();
+        var totalCostStatisticsSum = 0.0;
         await foreach (var cost in berrySystemDbContext.Costs
                            .Where(costFilter)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
@@ -77,21 +78,22 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
             //TODO use eventTime instead of createdAt ?
             costDataSum.TryAdd(timeSettingSelector(cost.CreatedAt), new CostsSum(0));
             costDataSum[timeSettingSelector(cost.CreatedAt)].Costs += cost.Price;
+
+            totalCostStatisticsSum += cost.Price;
         }
         
+        //TimeSettin
         var costStatistics = new Dictionary<int, double>();
-        var costStatisticsSum = 0.0;
         
         foreach (var key in costDataSum.Keys)
         {
            costStatistics[key] = costDataSum[key].Costs;
-           costStatisticsSum += costDataSum[key].Costs;
         }
 
         return new CostStatisticsDto
         {
             Data = costStatistics,
-            Sum = costStatisticsSum
+            Sum = totalCostStatisticsSum
         };
     }
 }

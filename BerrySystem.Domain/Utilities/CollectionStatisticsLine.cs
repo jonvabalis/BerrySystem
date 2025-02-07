@@ -1,6 +1,6 @@
 ﻿namespace BerrySystem.Domain.Utilities;
 
-public class CollectionStatisticsLine(double harvestKilograms, double saleKilograms, double saleTotalPrice)
+public class CollectionStatisticsLine(double harvestKilograms = 0, double saleKilograms = 0, double saleTotalPrice = 0)
 {
     public double HarvestKilograms { get; set; } = harvestKilograms;
     public double SaleKilograms { get; set; } = saleKilograms;
