@@ -19,7 +19,7 @@ public class GetCollectionStatisticsFilteredQueryHandler(IStatisticsHelperServic
             Expression<Func<Domain.Entities.Sale, bool>> saleFilter = sale => sale.BerryType.Id == request.BerryTypeId &&
                                                                               sale.CreatedAt.Year == request.Year &&
                                                                               sale.CreatedAt.Month == request.Month;
-            
+
             return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, TimeSettingType.Day, cancellationToken);
         }
 
@@ -29,7 +29,7 @@ public class GetCollectionStatisticsFilteredQueryHandler(IStatisticsHelperServic
                 harvest.CreatedAt.Year == request.Year;
             Expression<Func<Domain.Entities.Sale, bool>> saleFilter = sale => sale.BerryType.Id == request.BerryTypeId
                                                                               && sale.CreatedAt.Year == request.Year;
-            
+
             return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, TimeSettingType.Month, cancellationToken);
         }
 
@@ -39,12 +39,12 @@ public class GetCollectionStatisticsFilteredQueryHandler(IStatisticsHelperServic
                 harvest.CreatedAt.Month == request.Month;
             Expression<Func<Domain.Entities.Sale, bool>> saleFilter = sale => sale.BerryType.Id == request.BerryTypeId &&
                                                                               sale.CreatedAt.Month == request.Month;
-            
+
             return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, TimeSettingType.Year, cancellationToken);
         }
-        
+
         throw new Exception();
     }
 
-    
+
 }

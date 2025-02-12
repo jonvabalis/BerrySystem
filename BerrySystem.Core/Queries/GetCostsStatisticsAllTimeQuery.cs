@@ -5,5 +5,5 @@ namespace BerrySystem.Core.Queries;
 
 public class GetCostsStatisticsAllTimeQuery : IRequest<CostStatisticsDto>
 {
-    
+
 }

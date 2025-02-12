@@ -5,5 +5,5 @@ namespace BerrySystem.Core.Queries;
 
 public class GetAllBerryTypesQuery : IRequest<List<BerryType>>
 {
-    
+
 }

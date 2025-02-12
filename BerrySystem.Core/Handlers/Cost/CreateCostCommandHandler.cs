@@ -13,10 +13,10 @@ public class CreateCostCommandHandler(BerrySystemDbContext berrySystemDbContext)
         {
             Price = request.Price,
         };
-        
+
         await berrySystemDbContext.Costs.AddAsync(cost, cancellationToken);
         await berrySystemDbContext.SaveChangesAsync(cancellationToken);
-        
+
         return cost.Id;
     }
 }

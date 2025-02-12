@@ -5,5 +5,5 @@ namespace BerrySystem.Core.Queries;
 
 public class GetAllCostsQuery : IRequest<List<Cost>>
 {
-    
+
 }

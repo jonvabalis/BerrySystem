@@ -13,10 +13,10 @@ public class CreateBerryTypeCommandHandler(BerrySystemDbContext berrySystemDbCon
         {
             Type = request.Type,
         };
-        
+
         await berrySystemDbContext.BerryTypes.AddAsync(berryType, cancellationToken);
         await berrySystemDbContext.SaveChangesAsync(cancellationToken);
-        
+
         return berryType.Id;
     }
 }

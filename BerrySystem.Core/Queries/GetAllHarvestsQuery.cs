@@ -5,5 +5,5 @@ namespace BerrySystem.Core.Queries;
 
 public class GetAllHarvestsQuery : IRequest<List<Domain.Entities.Harvest>>
 {
-    
+
 }

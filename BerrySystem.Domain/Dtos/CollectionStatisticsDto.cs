@@ -10,6 +10,6 @@ public class CollectionStatisticsDto
     public CollectionStatisticsDto()
     {
         Data = new();
-        Sum = new (0, 0, 0);
+        Sum = new(0, 0, 0);
     }
 }

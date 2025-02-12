@@ -14,7 +14,7 @@ public class GetCollectionStatisticsAllTimeQueryHandler(IStatisticsHelperService
         Expression<Func<Domain.Entities.Harvest, bool>> harvestFilter = harvest =>
             harvest.BerryType.Id == request.BerryTypeId;
         Expression<Func<Domain.Entities.Sale, bool>> saleFilter = sale => sale.BerryType.Id == request.BerryTypeId;
-            
+
         return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, TimeSettingType.Year, cancellationToken);
     }
 }

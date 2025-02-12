@@ -25,13 +25,13 @@ public class CreateHarvestCommandHandler(BerrySystemDbContext berrySystemDbConte
             if (berryKind == null)
                 throw new Exception($"BerryKind with ID {request.BerryKindId} was not found.");
         }
-        
+
         //TODO: Validation
         // if (berryKind != null && berryKind.BerryType.Id != berryType.Id)
         // {
         //     throw new Exception("The specified BerryKind does not belong to the given BerryType.");
         // }
-        
+
         var harvest = new Domain.Entities.Harvest
         {
             Kilograms = request.Kilograms,
@@ -40,10 +40,10 @@ public class CreateHarvestCommandHandler(BerrySystemDbContext berrySystemDbConte
             BerryType = berryType,
             BerryKind = berryKind,
         };
-        
+
         await berrySystemDbContext.Harvests.AddAsync(harvest, cancellationToken);
         await berrySystemDbContext.SaveChangesAsync(cancellationToken);
-        
+
         return harvest.Id;
     }
 }

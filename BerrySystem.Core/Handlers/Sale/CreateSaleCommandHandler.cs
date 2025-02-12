@@ -25,13 +25,13 @@ public class CreateSaleCommandHandler(BerrySystemDbContext berrySystemDbContext)
             if (berryKind == null)
                 throw new Exception($"BerryKind with ID {request.BerryKindId} was not found.");
         }
-        
+
         //TODO: Validation
         // if (berryKind != null && berryKind.BerryType.Id != berryType.Id)
         // {
         //     throw new Exception("The specified BerryKind does not belong to the given BerryType.");
         // }
-        
+
         var sale = new Domain.Entities.Sale
         {
             Kilograms = request.Kilograms,
@@ -43,10 +43,10 @@ public class CreateSaleCommandHandler(BerrySystemDbContext berrySystemDbContext)
             BerryType = berryType,
             BerryKind = berryKind,
         };
-        
+
         await berrySystemDbContext.Sales.AddAsync(sale, cancellationToken);
         await berrySystemDbContext.SaveChangesAsync(cancellationToken);
-        
+
         return sale.Id;
     }
 }

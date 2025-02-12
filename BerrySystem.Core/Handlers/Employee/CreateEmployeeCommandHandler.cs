@@ -17,10 +17,10 @@ public class CreateEmployeeCommandHandler(BerrySystemDbContext berrySystemDbCont
             PhoneNumber = request.PhoneNumber,
             Birthday = request.Birthday,
         };
-        
+
         await berrySystemDbContext.Employees.AddAsync(employee, cancellationToken);
         await berrySystemDbContext.SaveChangesAsync(cancellationToken);
-        
+
         return employee.Id;
     }
 }
