@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using BerrySystem.Domain.Types;
+using BerrySystem.Domain.Utilities.TimeSetting;
 
 namespace BerrySystem.Core.Services.Interfaces;
 
@@ -10,9 +11,10 @@ public interface IStatisticsHelperService
         Expression<Func<Domain.Entities.Sale, bool>> saleFilter,
         TimeSettingType timeSettingType,
         CancellationToken cancellationToken);
-    
+
     public Task<Domain.Dtos.CostStatisticsDto> CostStatisticsByFilter(
         Expression<Func<Domain.Entities.Cost, bool>> costFilter,
-        TimeSettingType timeSettingType,
+        TimeSetting timeSettingType,
+        DateTime requestDate,
         CancellationToken cancellationToken);
 }

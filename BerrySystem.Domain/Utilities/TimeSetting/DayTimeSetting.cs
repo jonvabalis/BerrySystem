@@ -1,13 +1,13 @@
 ﻿namespace BerrySystem.Domain.Utilities.TimeSetting;
 
-public class DayTimeSetting<T> : TimeSetting<T> where T : class, new()
+public class DayTimeSetting : TimeSetting
 {
     public override int SelectByType(DateTime dateTime)
     {
         return dateTime.Day;
     }
 
-    public override void TableFormat(ref Dictionary<int, T> table, DateTime dateParameter)
+    public override Dictionary<int, T> TableFormat<T>(Dictionary<int, T> table, DateTime dateParameter)
     {
         var totalDays = DateTime.DaysInMonth(dateParameter.Year, dateParameter.Month);
 
@@ -15,8 +15,8 @@ public class DayTimeSetting<T> : TimeSetting<T> where T : class, new()
         {
             table.TryAdd(i, new T());
         }
-        
-        table = table.OrderBy(e => e.Key)
+
+        return table.OrderBy(e => e.Key)
             .ToDictionary(e => e.Key, e => e.Value);
     }
 }

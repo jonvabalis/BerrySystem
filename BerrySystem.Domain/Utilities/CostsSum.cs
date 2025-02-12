@@ -1,6 +1,10 @@
 ﻿namespace BerrySystem.Domain.Utilities;
 
-public class CostsSum(double costs = 0)
+public class CostsSum(double cost)
 {
-    public double Costs { get; set; } = costs;
+    public double Costs { get; set; } = cost;
+
+    public CostsSum() : this(0)
+    {
+    }
 }
