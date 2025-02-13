@@ -69,7 +69,7 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
         CancellationToken cancellationToken)
     {
         var costDataSum = new Dictionary<int, CostsSum>();
-        var totalCostStatisticsSum = 0.0;
+        var totalCostStatisticsSum = new CostsSum();
         await foreach (var cost in berrySystemDbContext.Costs
                            .Where(costFilter)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
@@ -79,7 +79,7 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
             costDataSum.TryAdd(timeSettingType.SelectByType(costTime), new CostsSum(0));
             costDataSum[timeSettingType.SelectByType(costTime)].Costs += cost.Price;
 
-            totalCostStatisticsSum += cost.Price;
+            totalCostStatisticsSum.Costs += cost.Price;
         }
 
         costDataSum = timeSettingType.TableFormat(costDataSum, requestDate);
