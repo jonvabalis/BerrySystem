@@ -5,4 +5,6 @@ public class CollectionStatisticsLine(double harvestKilograms = 0, double saleKi
     public double HarvestKilograms { get; set; } = harvestKilograms;
     public double SaleKilograms { get; set; } = saleKilograms;
     public double SaleTotalPrice { get; set; } = saleTotalPrice;
+
+    public CollectionStatisticsLine() : this(0) { }
 }

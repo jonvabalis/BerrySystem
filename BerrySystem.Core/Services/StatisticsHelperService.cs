@@ -14,19 +14,18 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
 {
     public async Task<Domain.Dtos.CollectionStatisticsDto> CollectionStatisticsByFilter(Expression<Func<Domain.Entities.Harvest, bool>> harvestFilter,
         Expression<Func<Domain.Entities.Sale, bool>> saleFilter,
-        TimeSettingType timeSettingType,
+        TimeSetting timeSettingType,
+        DateTime requestDate,
         CancellationToken cancellationToken)
     {
-        var timeSettingSelector = DateTimeExtensions.TimeSettingSelector(timeSettingType);
-
         var harvestDataSum = new Dictionary<int, HarvestsSum>();
         await foreach (var harvest in berrySystemDbContext.Harvests
                            .Where(harvestFilter)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
         {
             //TODO use eventTime instead of createdAt
-            harvestDataSum.TryAdd(timeSettingSelector(harvest.CreatedAt), new HarvestsSum(0));
-            harvestDataSum[timeSettingSelector(harvest.CreatedAt)].Kilograms += harvest.Kilograms;
+            harvestDataSum.TryAdd(timeSettingType.SelectByType(harvest.CreatedAt), new HarvestsSum(0));
+            harvestDataSum[timeSettingType.SelectByType(harvest.CreatedAt)].Kilograms += harvest.Kilograms;
         }
 
         var saleDataSum = new Dictionary<int, SalesSum>();
@@ -35,9 +34,9 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
         {
             //TODO use eventTime instead of createdAt
-            saleDataSum.TryAdd(timeSettingSelector(sale.CreatedAt), new SalesSum(0, 0));
-            saleDataSum[timeSettingSelector(sale.CreatedAt)].Kilograms += sale.Kilograms;
-            saleDataSum[timeSettingSelector(sale.CreatedAt)].TotalPrice += sale.TotalPrice;
+            saleDataSum.TryAdd(timeSettingType.SelectByType(sale.CreatedAt), new SalesSum(0, 0));
+            saleDataSum[timeSettingType.SelectByType(sale.CreatedAt)].Kilograms += sale.Kilograms;
+            saleDataSum[timeSettingType.SelectByType(sale.CreatedAt)].TotalPrice += sale.TotalPrice;
         }
 
         var collectionStatistics = new Dictionary<int, CollectionStatisticsLine>();
@@ -55,6 +54,8 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
             collectionStatisticsSum.SaleKilograms += salesSum.Kilograms;
             collectionStatisticsSum.SaleTotalPrice += salesSum.TotalPrice;
         }
+
+        collectionStatistics = timeSettingType.TableFormat(collectionStatistics, requestDate);
 
         return new CollectionStatisticsDto
         {

@@ -2,6 +2,7 @@
 using BerrySystem.Core.Queries;
 using BerrySystem.Core.Services.Interfaces;
 using BerrySystem.Domain.Types;
+using BerrySystem.Domain.Utilities.TimeSetting;
 using MediatR;
 
 namespace BerrySystem.Core.Handlers.Statistics;
@@ -15,7 +16,7 @@ public class GetCollectionStatisticsAllTimeQueryHandler(IStatisticsHelperService
             harvest.BerryType.Id == request.BerryTypeId;
         Expression<Func<Domain.Entities.Sale, bool>> saleFilter = sale => sale.BerryType.Id == request.BerryTypeId;
 
-        return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, TimeSettingType.Year, cancellationToken);
+        return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, new YearTimeSetting(), new DateTime(), cancellationToken);
     }
 }
 

@@ -9,7 +9,8 @@ public interface IStatisticsHelperService
     public Task<Domain.Dtos.CollectionStatisticsDto> CollectionStatisticsByFilter(
         Expression<Func<Domain.Entities.Harvest, bool>> harvestFilter,
         Expression<Func<Domain.Entities.Sale, bool>> saleFilter,
-        TimeSettingType timeSettingType,
+        TimeSetting timeSettingType,
+        DateTime requestDate,
         CancellationToken cancellationToken);
 
     public Task<Domain.Dtos.CostStatisticsDto> CostStatisticsByFilter(

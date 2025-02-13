@@ -2,6 +2,7 @@
 using BerrySystem.Core.Queries;
 using BerrySystem.Core.Services.Interfaces;
 using BerrySystem.Domain.Types;
+using BerrySystem.Domain.Utilities.TimeSetting;
 using MediatR;
 
 namespace BerrySystem.Core.Handlers.Statistics;
@@ -20,7 +21,8 @@ public class GetCollectionStatisticsFilteredQueryHandler(IStatisticsHelperServic
                                                                               sale.CreatedAt.Year == request.Year &&
                                                                               sale.CreatedAt.Month == request.Month;
 
-            return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, TimeSettingType.Day, cancellationToken);
+            return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, new DayTimeSetting(),
+                new DateTime(request.Year ?? 1, request.Month ?? 1, 1), cancellationToken);
         }
 
         if (request.Year is not null)
@@ -30,7 +32,8 @@ public class GetCollectionStatisticsFilteredQueryHandler(IStatisticsHelperServic
             Expression<Func<Domain.Entities.Sale, bool>> saleFilter = sale => sale.BerryType.Id == request.BerryTypeId
                                                                               && sale.CreatedAt.Year == request.Year;
 
-            return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, TimeSettingType.Month, cancellationToken);
+            return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, new MonthTimeSetting(),
+                new DateTime(), cancellationToken);
         }
 
         if (request.Month is not null)
@@ -40,7 +43,8 @@ public class GetCollectionStatisticsFilteredQueryHandler(IStatisticsHelperServic
             Expression<Func<Domain.Entities.Sale, bool>> saleFilter = sale => sale.BerryType.Id == request.BerryTypeId &&
                                                                               sale.CreatedAt.Month == request.Month;
 
-            return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, TimeSettingType.Year, cancellationToken);
+            return await statisticsHelperService.CollectionStatisticsByFilter(harvestFilter, saleFilter, new YearTimeSetting(),
+                new DateTime(), cancellationToken);
         }
 
         throw new Exception();
