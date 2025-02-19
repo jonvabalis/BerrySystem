@@ -20,4 +20,11 @@ public class HarvestController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
+    
+    [HttpPost("CreateBulk")]
+    public async Task<IActionResult> CreateBulk(CreateBulkHarvestCommand command)
+    {
+        var result = await Mediator.Send(command);
+        return Ok(result);
+    }
 }

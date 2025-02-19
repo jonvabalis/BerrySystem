@@ -20,4 +20,11 @@ public class SaleController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
+    
+    [HttpPost("CreateBulk")]
+    public async Task<IActionResult> CreateBulk(CreateBulkSaleCommand command)
+    {
+        var result = await Mediator.Send(command);
+        return Ok(result);
+    }
 }
