@@ -35,7 +35,7 @@ public class CreateBulkSaleCommandHandler(BerrySystemDbContext berrySystemDbCont
                 TotalPrice = sale.TotalPrice,
                 EmployeeId = sale.EmployeeId,
                 SaleType = sale.SaleType,
-                EventTime = sale.EventTime ?? DateTime.UtcNow,
+                EventTime = sale.EventTime,
                 BerryType = berryType,
                 BerryKind = berryKind,
             };

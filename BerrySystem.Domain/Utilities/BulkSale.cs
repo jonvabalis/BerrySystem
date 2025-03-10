@@ -1,9 +1,8 @@
 ﻿using BerrySystem.Domain.Types;
-using MediatR;
 
-namespace BerrySystem.Core.Commands;
+namespace BerrySystem.Domain.Utilities;
 
-public class CreateSaleCommand : IRequest<Guid>
+public class BulkSale
 {
     public double Kilograms { get; set; }
     public double PricePerKilo { get; set; }
@@ -12,4 +11,5 @@ public class CreateSaleCommand : IRequest<Guid>
     public SaleType SaleType { get; set; }
     public Guid BerryTypeId { get; set; }
     public Guid? BerryKindId { get; set; }
+    public DateTime EventTime { get; set; }
 }

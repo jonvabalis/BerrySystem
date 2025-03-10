@@ -32,7 +32,7 @@ public class CreateBulkHarvestCommandHandler(BerrySystemDbContext berrySystemDbC
             {
                 Kilograms = harvest.Kilograms,
                 EmployeeId = harvest.EmployeeId,
-                EventTime = DateTime.UtcNow,
+                EventTime = harvest.EventTime,
                 BerryType = berryType,
                 BerryKind = berryKind,
             };
