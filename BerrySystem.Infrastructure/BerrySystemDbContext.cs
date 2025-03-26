@@ -1,13 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using BerrySystem.Domain.Entities;
+using Serilog;
 
 namespace BerrySystem.Infrastructure;
 
-public class BerrySystemDbContext : DbContext
+public class BerrySystemDbContext(DbContextOptions<BerrySystemDbContext> options) : DbContext(options)
 {
-    public BerrySystemDbContext(DbContextOptions<BerrySystemDbContext> options) : base(options)
+    private static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(logBuilder =>
     {
+        logBuilder.AddSerilog();
+    });
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseLoggerFactory(LoggerFactory);
     }
 
     public DbSet<Harvest> Harvests { get; set; }

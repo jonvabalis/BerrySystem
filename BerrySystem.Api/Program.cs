@@ -3,16 +3,25 @@ using BerrySystem.Core.Services;
 using BerrySystem.Core.Services.Interfaces;
 using BerrySystem.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateHarvestCommand).Assembly));
 
-builder.Services.AddControllers();
+builder.Host.UseSerilog((context, services, config) =>
+{
+    config.ReadFrom.Configuration(context.Configuration);
+});
 
+builder.Services.AddControllers();
 builder.Services.AddDbContext<BerrySystemDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddSerilog()));
+});
+
 builder.Services.AddScoped<DbContext, BerrySystemDbContext>();
 builder.Services.AddScoped<IStatisticsHelperService, StatisticsHelperService>();
 
@@ -38,6 +47,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseCors();
 
