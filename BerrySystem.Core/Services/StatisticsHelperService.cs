@@ -21,7 +21,7 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
                            .Where(harvestFilter)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
         {
-            var harvestTime = harvest.EventTime ?? harvest.CreatedAt;
+            var harvestTime = harvest.EventTime;
             harvestDataSum.TryAdd(timeSettingType.SelectByType(harvestTime), new HarvestsSum(0));
             harvestDataSum[timeSettingType.SelectByType(harvestTime)].Kilograms += harvest.Kilograms;
         }
@@ -31,7 +31,7 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
                            .Where(saleFilter)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
         {
-            var saleTime = sale.EventTime ?? sale.CreatedAt;
+            var saleTime = sale.EventTime;
             saleDataSum.TryAdd(timeSettingType.SelectByType(saleTime), new SalesSum(0, 0));
             saleDataSum[timeSettingType.SelectByType(saleTime)].Kilograms += sale.Kilograms;
             saleDataSum[timeSettingType.SelectByType(saleTime)].TotalPrice += sale.TotalPrice;

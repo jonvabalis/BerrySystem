@@ -9,7 +9,7 @@ public class Sale : Entity
     public double TotalPrice { get; set; }
     public Guid EmployeeId { get; set; }
     public SaleType SaleType { get; set; }
-    public DateTime? EventTime { get; set; }
+    public DateTime EventTime { get; set; }
     public BerryType BerryType { get; set; }
     public BerryKind? BerryKind { get; set; }
 }
