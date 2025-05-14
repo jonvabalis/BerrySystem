@@ -2,7 +2,8 @@
 
 public class BriefStatisticDto
 {
-    public double HarvestedCount { get; set; } = 0;
-    public double SoldCount { get; set; } = 0;
-    public double SoldSum { get; set; } = 0;
+    public required Dictionary<Guid, EmployeeBriefDto> Employees { get; set; }
+    public double HarvestedCount { get; set; }
+    public double SoldCount { get; set; }
+    public double SoldSum { get; set; }
 }
