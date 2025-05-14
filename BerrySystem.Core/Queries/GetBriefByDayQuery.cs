@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BerrySystem.Core.Queries;
 
-public class GetBriefByDayQuery : IRequest<BriefStatisticDto>
+public class GetBriefByDayQuery : IRequest<HistoryBriefStatisticsDto>
 {
     public DateOnly Date { get; set; }
 }

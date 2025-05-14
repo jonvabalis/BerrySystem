@@ -6,14 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BerrySystem.Core.Handlers.History;
 
-public class GetBriefByDayQueryHandler(BerrySystemDbContext berrySystemDbContext) : IRequestHandler<GetBriefByDayQuery, BriefStatisticDto>
+public class GetBriefByDayQueryHandler(BerrySystemDbContext berrySystemDbContext) : IRequestHandler<GetBriefByDayQuery, HistoryBriefStatisticsDto>
 {
-    public async Task<BriefStatisticDto> Handle(GetBriefByDayQuery request, CancellationToken cancellationToken)
+    public async Task<HistoryBriefStatisticsDto> Handle(GetBriefByDayQuery request, CancellationToken cancellationToken)
     {
-        var employees = new Dictionary<Guid, EmployeeBriefDto>();
-        double totalHarvests = 0;
-        double totalSold = 0;
-        double totalSum = 0;
+        var employees = new Dictionary<Guid, HistoryBriefEmployeeDto>();
+        var totals = new HistoryBriefStatisticsTotalDto();
         
         await foreach (var harvest in berrySystemDbContext.Harvests
                            .Where(harvest => DateOnly.FromDateTime(harvest.EventTime) == request.Date)
@@ -22,7 +20,7 @@ public class GetBriefByDayQueryHandler(BerrySystemDbContext berrySystemDbContext
         {
             if (!employees.ContainsKey(harvest.EmployeeId))
             {
-                employees.TryAdd(harvest.EmployeeId, new EmployeeBriefDto
+                employees.TryAdd(harvest.EmployeeId, new HistoryBriefEmployeeDto
                 {
                     Name = $"{harvest.Employee.FirstName} {harvest.Employee.LastName}",
                     HarvestedCount = 0,
@@ -31,7 +29,7 @@ public class GetBriefByDayQueryHandler(BerrySystemDbContext berrySystemDbContext
             }
             
             employees[harvest.EmployeeId].HarvestedCount += harvest.Kilograms;
-            totalHarvests += harvest.Kilograms;
+            totals.HarvestedCount += harvest.Kilograms;
         }
         
         await foreach (var sale in berrySystemDbContext.Sales
@@ -41,7 +39,7 @@ public class GetBriefByDayQueryHandler(BerrySystemDbContext berrySystemDbContext
         {
             if (!employees.ContainsKey(sale.EmployeeId))
             {
-                employees.TryAdd(sale.EmployeeId, new EmployeeBriefDto
+                employees.TryAdd(sale.EmployeeId, new HistoryBriefEmployeeDto
                 {
                     Name = $"{sale.Employee.FirstName} {sale.Employee.LastName}",
                     HarvestedCount = 0,
@@ -50,16 +48,14 @@ public class GetBriefByDayQueryHandler(BerrySystemDbContext berrySystemDbContext
             }
             
             employees[sale.EmployeeId].SoldCount += sale.Kilograms;
-            totalSold += sale.Kilograms;
-            totalSum += sale.TotalPrice;
+            totals.SoldCount += sale.Kilograms;
+            totals.SoldSum += sale.TotalPrice;
         }
 
-        return new BriefStatisticDto
+        return new HistoryBriefStatisticsDto
         {
             Employees = employees,
-            HarvestedCount = totalHarvests,
-            SoldCount = totalSold,
-            SoldSum = totalSum
+            Totals = totals
         };
     }
 }
