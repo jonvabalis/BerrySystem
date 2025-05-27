@@ -1,4 +1,5 @@
 ﻿using BerrySystem.Core.Queries;
+using BerrySystem.Domain.Dtos;
 using BerrySystem.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -6,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 namespace BerrySystem.Core.Handlers.BerryType;
 
 public class GetAllBerryTypesQueryHandler(BerrySystemDbContext berrySystemDbContext)
-    : IRequestHandler<GetAllBerryTypesQuery, List<Domain.Entities.BerryType>>
+    : IRequestHandler<GetAllBerryTypesQuery, List<GetAllBerryTypeDto>>
 {
-    public async Task<List<Domain.Entities.BerryType>> Handle(GetAllBerryTypesQuery request, CancellationToken cancellationToken)
+    public async Task<List<GetAllBerryTypeDto>> Handle(GetAllBerryTypesQuery request, CancellationToken cancellationToken)
     {
-        return await berrySystemDbContext.BerryTypes.ToListAsync(cancellationToken);
+        var berryTypes = await berrySystemDbContext.BerryTypes.ToListAsync(cancellationToken);
+
+        return berryTypes.Select(berryType => new GetAllBerryTypeDto(berryType.Id, berryType.Type)).ToList();
     }
 }

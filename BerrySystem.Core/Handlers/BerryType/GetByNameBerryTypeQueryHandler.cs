@@ -1,4 +1,5 @@
 ﻿using BerrySystem.Core.Queries;
+using BerrySystem.Domain.Dtos;
 using BerrySystem.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -6,12 +7,14 @@ using Microsoft.EntityFrameworkCore;
 namespace BerrySystem.Core.Handlers.BerryType;
 
 public class GetByNameBerryTypeQueryHandler(BerrySystemDbContext berrySystemDbContext)
-    : IRequestHandler<GetByNameBerryTypeQuery, Domain.Entities.BerryType>
+    : IRequestHandler<GetByNameBerryTypeQuery, GetAllBerryTypeDto>
 {
-    public async Task<Domain.Entities.BerryType> Handle(GetByNameBerryTypeQuery request, CancellationToken cancellationToken)
+    public async Task<GetAllBerryTypeDto> Handle(GetByNameBerryTypeQuery request, CancellationToken cancellationToken)
     {
         return await berrySystemDbContext.BerryTypes
-            .SingleOrDefaultAsync(berryType => berryType.Type == request.BerryType, cancellationToken)
-               ?? throw new NullReferenceException($"No berryType \"{request.BerryType}\" found or multiple instances found");
+                   .Where(bt => bt.Type == request.BerryType)
+                   .Select(bt => new GetAllBerryTypeDto(bt.Id, bt.Type))
+                   .SingleOrDefaultAsync(cancellationToken) 
+               ?? throw new InvalidOperationException($"No berryType \"{request.BerryType}\" found");
     }
 }
