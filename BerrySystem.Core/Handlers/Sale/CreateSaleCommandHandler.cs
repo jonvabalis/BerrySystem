@@ -39,7 +39,10 @@ public class CreateSaleCommandHandler(BerrySystemDbContext berrySystemDbContext)
             TotalPrice = request.TotalPrice,
             EmployeeId = request.EmployeeId,
             SaleType = request.SaleType,
-            EventTime = DateTime.UtcNow,
+            EventTime = TimeZoneInfo.ConvertTimeFromUtc(
+                DateTime.UtcNow, 
+                TimeZoneInfo.FindSystemTimeZoneById("Europe/Vilnius")
+            ), 
             BerryType = berryType,
             BerryKind = berryKind,
         };

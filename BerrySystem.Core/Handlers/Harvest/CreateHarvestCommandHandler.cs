@@ -36,7 +36,10 @@ public class CreateHarvestCommandHandler(BerrySystemDbContext berrySystemDbConte
         {
             Kilograms = request.Kilograms,
             EmployeeId = request.EmployeeId,
-            EventTime = DateTime.UtcNow,
+            EventTime = TimeZoneInfo.ConvertTimeFromUtc(
+                DateTime.UtcNow, 
+                TimeZoneInfo.FindSystemTimeZoneById("Europe/Vilnius")
+            ), 
             BerryType = berryType,
             BerryKind = berryKind,
         };
