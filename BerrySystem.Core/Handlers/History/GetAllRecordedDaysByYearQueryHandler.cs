@@ -11,7 +11,7 @@ public class GetAllRecordedDaysByYearQueryHandler(BerrySystemDbContext berrySyst
     {
         var recordedDays = new HashSet<DateOnly>();
         await foreach (var harvest in berrySystemDbContext.Harvests
-                           .Where(harvest => harvest.EventTime.Year == request.Year)
+                           .Where(harvest => harvest.BerryType.Id == request.BerryTypeId && harvest.EventTime.Year == request.Year)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
         {
             var date = DateOnly.FromDateTime(harvest.EventTime);
@@ -19,7 +19,7 @@ public class GetAllRecordedDaysByYearQueryHandler(BerrySystemDbContext berrySyst
         }
         
         await foreach (var sale in berrySystemDbContext.Sales
-                           .Where(sale => sale.EventTime.Year == request.Year)
+                           .Where(sale => sale.BerryType.Id == request.BerryTypeId && sale.EventTime.Year == request.Year)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
         {
             var date = DateOnly.FromDateTime(sale.EventTime);

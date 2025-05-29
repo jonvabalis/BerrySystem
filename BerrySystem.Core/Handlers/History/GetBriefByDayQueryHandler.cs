@@ -14,7 +14,7 @@ public class GetBriefByDayQueryHandler(BerrySystemDbContext berrySystemDbContext
         var totals = new HistoryBriefStatisticsTotalDto();
         
         await foreach (var harvest in berrySystemDbContext.Harvests
-                           .Where(harvest => DateOnly.FromDateTime(harvest.EventTime) == request.Date)
+                           .Where(harvest => harvest.BerryType.Id == request.BerryTypeId && DateOnly.FromDateTime(harvest.EventTime) == request.Date)
                            .Include(harvest => harvest.Employee)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
         {
@@ -33,7 +33,7 @@ public class GetBriefByDayQueryHandler(BerrySystemDbContext berrySystemDbContext
         }
         
         await foreach (var sale in berrySystemDbContext.Sales
-                           .Where(sale => DateOnly.FromDateTime(sale.EventTime) == request.Date)
+                           .Where(sale => sale.BerryType.Id == request.BerryTypeId && DateOnly.FromDateTime(sale.EventTime) == request.Date)
                            .Include(harvest => harvest.Employee)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
         {

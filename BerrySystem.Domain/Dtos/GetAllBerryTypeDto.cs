@@ -1,7 +1,7 @@
 ﻿namespace BerrySystem.Domain.Dtos;
 
-public class GetAllBerryTypeDto(Guid id, string type)
+public class GetAllBerryTypeDto(Guid id, string name)
 {
     public Guid Id { get; set; } = id;
-    public string Type { get; set; } = type;
+    public string Name { get; set; } = name;
 }
