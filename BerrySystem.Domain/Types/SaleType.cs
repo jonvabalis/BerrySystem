@@ -4,4 +4,5 @@ public enum SaleType
 {
     Local,
     Order,
+    Gift,
 }
