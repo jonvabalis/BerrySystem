@@ -17,7 +17,7 @@ public class GetAllRecordedDaysByYearQueryHandler(BerrySystemDbContext berrySyst
             var date = DateOnly.FromDateTime(harvest.EventTime);
             recordedDays.Add(date);
         }
-        
+
         await foreach (var sale in berrySystemDbContext.Sales
                            .Where(sale => sale.BerryType.Id == request.BerryTypeId && sale.EventTime.Year == request.Year)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))

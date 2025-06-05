@@ -5,5 +5,5 @@ namespace BerrySystem.Core.Commands;
 
 public class CreateBulkHarvestCommand : IRequest<Unit>
 {
-    public required List<BulkHarvest> Harvests { get; set; } 
+    public required List<BulkHarvest> Harvests { get; set; }
 }

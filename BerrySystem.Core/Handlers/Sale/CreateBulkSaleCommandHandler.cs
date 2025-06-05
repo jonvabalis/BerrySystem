@@ -14,7 +14,7 @@ public class CreateBulkSaleCommandHandler(BerrySystemDbContext berrySystemDbCont
             //TODO refactor for validation
             var berryType = await berrySystemDbContext.BerryTypes
                 .FindAsync([sale.BerryTypeId], cancellationToken);
-            
+
             if (berryType == null)
                 throw new Exception($"BerryType with ID {sale.BerryTypeId} not found.");
 
@@ -27,7 +27,7 @@ public class CreateBulkSaleCommandHandler(BerrySystemDbContext berrySystemDbCont
                 if (berryKind == null)
                     throw new Exception($"BerryKind with ID {sale.BerryKindId} was not found.");
             }
-            
+
             var saleEntity = new Domain.Entities.Sale
             {
                 Kilograms = sale.Kilograms,
@@ -39,7 +39,7 @@ public class CreateBulkSaleCommandHandler(BerrySystemDbContext berrySystemDbCont
                 BerryType = berryType,
                 BerryKind = berryKind,
             };
-            
+
             sales.Add(saleEntity);
         }
 

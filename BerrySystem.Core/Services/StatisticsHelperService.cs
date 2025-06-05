@@ -10,7 +10,7 @@ namespace BerrySystem.Core.Services;
 
 public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) : IStatisticsHelperService
 {
-    public async Task<Domain.Dtos.CollectionStatisticsDto> CollectionStatisticsByFilter(Expression<Func<Domain.Entities.Harvest, bool>> harvestFilter,
+    public async Task<CollectionStatisticsDto> CollectionStatisticsByFilter(Expression<Func<Domain.Entities.Harvest, bool>> harvestFilter,
         Expression<Func<Domain.Entities.Sale, bool>> saleFilter,
         TimeSetting timeSettingType,
         DateTime requestDate,
@@ -62,7 +62,7 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
         };
     }
 
-    public async Task<Domain.Dtos.CostStatisticsDto> CostStatisticsByFilter(
+    public async Task<CostStatisticsDto> CostStatisticsByFilter(
         Expression<Func<Domain.Entities.Cost, bool>> costFilter,
         TimeSetting timeSettingType,
         DateTime requestDate,

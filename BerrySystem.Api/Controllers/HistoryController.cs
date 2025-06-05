@@ -11,7 +11,7 @@ public class HistoryController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpGet("GetBriefByDay")]
     public async Task<IActionResult> GetBriefByDay([FromQuery] GetBriefByDayQuery query)
     {

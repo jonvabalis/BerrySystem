@@ -1,6 +1,5 @@
 using BerrySystem.Core.Commands;
 using BerrySystem.Core.Queries;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BerrySystem.Api.Controllers;
@@ -20,7 +19,7 @@ public class HarvestController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpPost("CreateBulk")]
     public async Task<IActionResult> CreateBulk(CreateBulkHarvestCommand command)
     {

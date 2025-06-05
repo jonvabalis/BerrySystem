@@ -14,7 +14,7 @@ public class GetByNameBerryTypeQueryHandler(BerrySystemDbContext berrySystemDbCo
         return await berrySystemDbContext.BerryTypes
                    .Where(bt => bt.Type == request.BerryType)
                    .Select(bt => new GetAllBerryTypeDto(bt.Id, bt.Type))
-                   .SingleOrDefaultAsync(cancellationToken) 
+                   .SingleOrDefaultAsync(cancellationToken)
                ?? throw new InvalidOperationException($"No berryType \"{request.BerryType}\" found");
     }
 }

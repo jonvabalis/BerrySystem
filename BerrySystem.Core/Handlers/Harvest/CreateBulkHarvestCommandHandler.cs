@@ -14,7 +14,7 @@ public class CreateBulkHarvestCommandHandler(BerrySystemDbContext berrySystemDbC
             //TODO refactor for validation
             var berryType = await berrySystemDbContext.BerryTypes
                 .FindAsync([harvest.BerryTypeId], cancellationToken);
-            
+
             if (berryType == null)
                 throw new Exception($"BerryType with ID {harvest.BerryTypeId} not found.");
 
@@ -27,7 +27,7 @@ public class CreateBulkHarvestCommandHandler(BerrySystemDbContext berrySystemDbC
                 if (berryKind == null)
                     throw new Exception($"BerryKind with ID {harvest.BerryKindId} was not found.");
             }
-            
+
             var harvestEntity = new Domain.Entities.Harvest
             {
                 Kilograms = harvest.Kilograms,
@@ -36,7 +36,7 @@ public class CreateBulkHarvestCommandHandler(BerrySystemDbContext berrySystemDbC
                 BerryType = berryType,
                 BerryKind = berryKind,
             };
-            
+
             harvests.Add(harvestEntity);
         }
 

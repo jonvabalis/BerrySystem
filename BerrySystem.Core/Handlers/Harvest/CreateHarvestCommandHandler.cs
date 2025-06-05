@@ -1,7 +1,6 @@
 ﻿using BerrySystem.Core.Commands;
 using BerrySystem.Infrastructure;
 using MediatR;
-using BerrySystem.Domain.Entities;
 
 namespace BerrySystem.Core.Handlers.Harvest;
 
@@ -37,9 +36,9 @@ public class CreateHarvestCommandHandler(BerrySystemDbContext berrySystemDbConte
             Kilograms = request.Kilograms,
             EmployeeId = request.EmployeeId,
             EventTime = TimeZoneInfo.ConvertTimeFromUtc(
-                DateTime.UtcNow, 
+                DateTime.UtcNow,
                 TimeZoneInfo.FindSystemTimeZoneById("Europe/Vilnius")
-            ), 
+            ),
             BerryType = berryType,
             BerryKind = berryKind,
         };

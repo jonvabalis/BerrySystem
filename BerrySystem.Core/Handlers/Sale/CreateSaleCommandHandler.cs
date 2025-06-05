@@ -1,5 +1,4 @@
 ﻿using BerrySystem.Core.Commands;
-using BerrySystem.Domain.Entities;
 using BerrySystem.Infrastructure;
 using MediatR;
 
@@ -40,9 +39,9 @@ public class CreateSaleCommandHandler(BerrySystemDbContext berrySystemDbContext)
             EmployeeId = request.EmployeeId,
             SaleType = request.SaleType,
             EventTime = TimeZoneInfo.ConvertTimeFromUtc(
-                DateTime.UtcNow, 
+                DateTime.UtcNow,
                 TimeZoneInfo.FindSystemTimeZoneById("Europe/Vilnius")
-            ), 
+            ),
             BerryType = berryType,
             BerryKind = berryKind,
         };
