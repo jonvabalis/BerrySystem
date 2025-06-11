@@ -26,4 +26,26 @@ public class SaleController : BaseController
         var result = await Mediator.Send(command);
         return Ok(result);
     }
+    
+    [HttpPut("Update")]
+    public async Task<IActionResult> Update(UpdateSaleCommand command)
+    {
+        var result = await Mediator.Send(command);
+        return Ok(result);
+    }
+    
+    [HttpDelete("Delete/{saleId:guid}")]
+    public async Task<IActionResult> Delete(Guid saleId)
+    {
+        var command = new DeleteSaleCommand { SaleId = saleId };
+        var result = await Mediator.Send(command);
+        return Ok(result);
+    }
+    
+    [HttpGet("GetByDate")]
+    public async Task<IActionResult> GetByDate([FromQuery] GetSalesByDateQuery query)
+    {
+        var result = await Mediator.Send(query);
+        return Ok(result);
+    }
 }
