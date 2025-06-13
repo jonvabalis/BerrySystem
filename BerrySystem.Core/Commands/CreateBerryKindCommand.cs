@@ -4,6 +4,6 @@ namespace BerrySystem.Core.Commands;
 
 public class CreateBerryKindCommand : IRequest<Guid>
 {
-    public string Kind { get; set; } = string.Empty;
+    public required string Kind { get; set; }
     public Guid BerryTypeId { get; set; }
 }

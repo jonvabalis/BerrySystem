@@ -1,7 +1,10 @@
 using BerrySystem.Core.Commands;
 using BerrySystem.Core.Services;
 using BerrySystem.Core.Services.Interfaces;
+using BerrySystem.Core.Validation;
 using BerrySystem.Infrastructure;
+using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -9,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateHarvestCommand).Assembly));
+builder.Services.AddValidatorsFromAssemblyContaining<CreateBerryKindCommand>();
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 builder.Host.UseSerilog((context, services, config) =>
 {
@@ -53,6 +58,8 @@ app.UseSerilogRequestLogging();
 app.UseCors();
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMappingMiddleware>();
 
 app.UseAuthorization();
 

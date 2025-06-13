@@ -10,7 +10,7 @@ public class BerryKindController : BaseController
     public async Task<IActionResult> Create(CreateBerryKindCommand command)
     {
         var result = await Mediator.Send(command);
-        return Ok(result);
+        return CreatedAtAction(nameof(GetById), new { Id = result }, result);
     }
 
     [HttpGet("GetAll")]
