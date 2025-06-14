@@ -53,7 +53,10 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
             collectionStatisticsSum.SaleTotalPrice += salesSum.TotalPrice;
         }
 
-        collectionStatistics = timeSettingType.TableFormat(collectionStatistics, requestDate);
+        if (collectionStatistics.Count > 0)
+        {
+            collectionStatistics = timeSettingType.TableFormat(collectionStatistics, requestDate);
+        }
 
         return new CollectionStatisticsDto
         {
@@ -82,7 +85,10 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
             totalCostStatisticsSum.Costs += cost.Price;
         }
 
-        costDataSum = timeSettingType.TableFormat(costDataSum, requestDate);
+        if (costDataSum.Count > 0)
+        {
+            costDataSum = timeSettingType.TableFormat(costDataSum, requestDate);
+        }
 
         return new CostStatisticsDto
         {
