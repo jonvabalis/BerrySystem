@@ -1,4 +1,5 @@
-﻿using BerrySystem.Core.Queries;
+﻿using System.Globalization;
+using BerrySystem.Core.Queries;
 using BerrySystem.Domain.Dtos;
 using BerrySystem.Infrastructure;
 using MediatR;
@@ -15,14 +16,14 @@ public class GetCompareByYearStatisticsQueryHandler(BerrySystemDbContext berrySy
         var matchedHarvestData = await MatchHarvests(request, cancellationToken);
         var matchedSaleData = await MatchSales(request, cancellationToken);
 
-        var groupedHarvestDataByMonth = GroupHarvestDataByMonth(matchedHarvestData);
-        var groupedSaleDataByMonth = GroupSaleDataByMonth(matchedSaleData);
+        var groupedHarvestDataByMonth = GroupHarvestDataByMonth(matchedHarvestData, request.Years);
+        var groupedSaleDataByMonth = GroupSaleDataByMonth(matchedSaleData, request.Years);
 
         return new CompareByYearStatisticsDto
         {
             HarvestKilograms = groupedHarvestDataByMonth,
-            SaleKilograms = groupedSaleDataByMonth.Select(g => g.groupedSalesByYear).ToList(),
-            SaleRevenue = groupedSaleDataByMonth.Select(g => g.groupedRevenueByYear).ToList(),
+            SaleKilograms = groupedSaleDataByMonth.groupedSalesByYear,
+            SaleRevenue = groupedSaleDataByMonth.groupedRevenueByYear,
         };
     }
     
@@ -46,48 +47,80 @@ public class GetCompareByYearStatisticsQueryHandler(BerrySystemDbContext berrySy
             .ToListAsync(cancellationToken);
     }
     
-    private static List<Dictionary<string, double>> GroupHarvestDataByMonth(List<Domain.Entities.Harvest> matchedHarvestData)
+    private static List<Dictionary<string, string>> GroupHarvestDataByMonth(List<Domain.Entities.Harvest> matchedHarvestData, List<int> years)
     {
-        return matchedHarvestData
-            .GroupBy(h => h.EventTime.Month)
-            .OrderBy(g => g.Key)
-            .Select(mg =>
+        var harvestsByDate = matchedHarvestData
+            .GroupBy(h => h.EventTime.Date)
+            .ToDictionary(g => g.Key, g => g.Sum(h => h.Kilograms));
+
+        var startDate = new DateTime(0001, 1, 1); // ignoring leap year
+        var endDate = new DateTime(0001, 12, 31);
+
+        var result = new List<Dictionary<string, string>>();
+        var cumulativeByYear = years.ToDictionary(y => y, _ => 0.0);
+
+        for (var date = startDate; date <= endDate; date = date.AddDays(1))
+        {
+            var dayKey = date.ToString("MM-dd");
+            var harvestRow = new Dictionary<string, string> { ["time"] = dayKey };
+
+            foreach (var year in years)
             {
-                var groupedByYear = new Dictionary<string, double>
-                {
-                    ["time"] = mg.Key,
-                };
-                
-                foreach (var yearGroup in mg.GroupBy(h => h.EventTime.Year))
-                {
-                    groupedByYear[yearGroup.Key.ToString()] = yearGroup.Sum(h => h.Kilograms);
-                }
-                return groupedByYear;
-            }).ToList();
+                var actualDate = new DateTime(year, date.Month, date.Day);
+                var dailyValue = harvestsByDate.GetValueOrDefault(actualDate, 0);
+                cumulativeByYear[year] += dailyValue;
+                harvestRow[year.ToString()] = cumulativeByYear[year].ToString(CultureInfo.InvariantCulture);
+            }
+
+            result.Add(harvestRow);
+        }
+
+        return result;
     }
     
-    private static List<(Dictionary<string, double> groupedSalesByYear, Dictionary<string, double> groupedRevenueByYear)> GroupSaleDataByMonth(List<Domain.Entities.Sale> matchedSaleData)
+    private static (List<Dictionary<string, string>> groupedSalesByYear, List<Dictionary<string, string>> groupedRevenueByYear)
+        GroupSaleDataByMonth(List<Domain.Entities.Sale> matchedSaleData, List<int> years)
     {
-        return matchedSaleData
-            .GroupBy(s => s.EventTime.Month)
-            .OrderBy(g => g.Key)
-            .Select(mg =>
+        var salesByDate = matchedSaleData
+            .GroupBy(s => s.EventTime.Date)
+            .ToDictionary(g => g.Key, g => new
             {
-                var groupedSalesByYear = new Dictionary<string, double>
+                Kilograms = g.Sum(s => s.Kilograms),
+                Revenue = g.Sum(s => s.TotalPrice)
+            });
+
+        var startDate = new DateTime(0001, 1, 1); // ignoring leap year
+        var endDate = new DateTime(0001, 12, 31);
+
+        var saleKgResult = new List<Dictionary<string, string>>();
+        var saleRevResult = new List<Dictionary<string, string>>();
+
+        var saleCumulative = years.ToDictionary(y => y, _ => 0.0);
+        var revenueCumulative = years.ToDictionary(y => y, _ => 0.0);
+
+        for (var date = startDate; date <= endDate; date = date.AddDays(1))
+        {
+            var dayKey = date.ToString("MM-dd");
+            var saleKgRow = new Dictionary<string, string> { ["time"] = dayKey };
+            var revenueRow = new Dictionary<string, string> { ["time"] = dayKey };
+
+            foreach (var year in years)
+            {
+                var actualDate = new DateTime(year, date.Month, date.Day);
+                if (salesByDate.TryGetValue(actualDate, out var daily))
                 {
-                    ["time"] = mg.Key,
-                };
-                var groupedRevenueByYear = new Dictionary<string, double>
-                {
-                    ["time"] = mg.Key,
-                };
-                
-                foreach (var yearGroup in mg.GroupBy(s => s.EventTime.Year))
-                {
-                    groupedSalesByYear[yearGroup.Key.ToString()] = yearGroup.Sum(s => s.Kilograms);
-                    groupedRevenueByYear[yearGroup.Key.ToString()] = yearGroup.Sum(s => s.TotalPrice);
+                    saleCumulative[year] += daily.Kilograms;
+                    revenueCumulative[year] += daily.Revenue;
                 }
-                return (groupedSalesByYear, groupedRevenueByYear);
-            }).ToList();
+
+                saleKgRow[year.ToString()] = saleCumulative[year].ToString(CultureInfo.InvariantCulture);
+                revenueRow[year.ToString()] = revenueCumulative[year].ToString(CultureInfo.InvariantCulture);
+            }
+
+            saleKgResult.Add(saleKgRow);
+            saleRevResult.Add(revenueRow);
+        }
+
+        return (saleKgResult, saleRevResult);
     }
 }
