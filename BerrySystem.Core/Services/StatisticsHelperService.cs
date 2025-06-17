@@ -18,6 +18,8 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
     {
         var harvestDataSum = new Dictionary<int, HarvestsSum>();
         await foreach (var harvest in berrySystemDbContext.Harvests
+                           .AsNoTracking()
+                           .Include(h => h.BerryType)
                            .Where(harvestFilter)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
         {
@@ -28,6 +30,8 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
 
         var saleDataSum = new Dictionary<int, SalesSum>();
         await foreach (var sale in berrySystemDbContext.Sales
+                           .AsNoTracking()
+                           .Include( s =>  s.BerryType)
                            .Where(saleFilter)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
         {

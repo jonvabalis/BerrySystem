@@ -27,7 +27,7 @@ public class GetCollectionStatisticsFilteredQueryHandler(IStatisticsHelperServic
         if (request.Year is not null)
         {
             Expression<Func<Domain.Entities.Harvest, bool>> harvestFilter = harvest => harvest.BerryType.Id == request.BerryTypeId &&
-                harvest.CreatedAt.Year == request.Year;
+                harvest.EventTime.Year == request.Year;
             Expression<Func<Domain.Entities.Sale, bool>> saleFilter = sale => sale.BerryType.Id == request.BerryTypeId
                                                                               && sale.EventTime.Year == request.Year;
 
@@ -38,7 +38,7 @@ public class GetCollectionStatisticsFilteredQueryHandler(IStatisticsHelperServic
         if (request.Month is not null)
         {
             Expression<Func<Domain.Entities.Harvest, bool>> harvestFilter = harvest => harvest.BerryType.Id == request.BerryTypeId &&
-                harvest.CreatedAt.Month == request.Month;
+                harvest.EventTime.Month == request.Month;
             Expression<Func<Domain.Entities.Sale, bool>> saleFilter = sale => sale.BerryType.Id == request.BerryTypeId &&
                                                                               sale.EventTime.Month == request.Month;
 
