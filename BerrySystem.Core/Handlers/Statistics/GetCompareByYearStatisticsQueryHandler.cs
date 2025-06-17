@@ -19,14 +19,21 @@ public class GetCompareByYearStatisticsQueryHandler(BerrySystemDbContext berrySy
         var groupedHarvestDataByMonth = GroupHarvestDataByMonth(matchedHarvestData, request.Years);
         var groupedSaleDataByMonth = GroupSaleDataByMonth(matchedSaleData, request.Years);
 
+        const int monthStartDay = 1;
+        var monthEndDay = DateTime.DaysInMonth(0001, request.EndMonth);
+
+        var filteredHarvestsByMonth = FilterGroupByMonth(request, monthStartDay, monthEndDay, groupedHarvestDataByMonth);
+        var filteredSalesByMonth = FilterGroupByMonth(request, monthStartDay, monthEndDay, groupedSaleDataByMonth.groupedSalesByYear);
+        var filteredRevenueByMonth = FilterGroupByMonth(request, monthStartDay, monthEndDay, groupedSaleDataByMonth.groupedRevenueByYear);
+
         return new CompareByYearStatisticsDto
         {
-            HarvestKilograms = groupedHarvestDataByMonth,
-            SaleKilograms = groupedSaleDataByMonth.groupedSalesByYear,
-            SaleRevenue = groupedSaleDataByMonth.groupedRevenueByYear,
+            HarvestKilograms = filteredHarvestsByMonth,
+            SaleKilograms = filteredSalesByMonth,
+            SaleRevenue = filteredRevenueByMonth,
         };
     }
-    
+
     private async Task<List<Domain.Entities.Harvest>> MatchHarvests(GetCompareByYearStatisticsQuery request, CancellationToken cancellationToken)
     {
         return await berrySystemDbContext.Harvests
@@ -122,5 +129,34 @@ public class GetCompareByYearStatisticsQueryHandler(BerrySystemDbContext berrySy
         }
 
         return (saleKgResult, saleRevResult);
+    }
+    
+    private static List<Dictionary<string, string>> FilterGroupByMonth(GetCompareByYearStatisticsQuery request, int monthStartDay, int monthEndDay,
+        List<Dictionary<string, string>> groupedHarvestDataByMonth)
+    {
+        var startKey = $"{request.StartMonth:D2}-{monthStartDay:D2}";
+        var endKey = $"{request.EndMonth:D2}-{monthEndDay:D2}";
+        
+        var filteredEntries = new List<Dictionary<string, string>>();
+        var rangeFound = false;
+        foreach (var entry in groupedHarvestDataByMonth)
+        {
+            if (entry["time"] == startKey)
+            {
+                rangeFound = true;
+            }
+            
+            if (rangeFound)
+            {
+                filteredEntries.Add(entry);
+                
+                if (entry["time"] == endKey)
+                {
+                    break;
+                }
+            }
+        }
+
+        return filteredEntries;
     }
 }

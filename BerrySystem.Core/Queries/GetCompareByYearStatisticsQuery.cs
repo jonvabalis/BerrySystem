@@ -7,4 +7,6 @@ public class GetCompareByYearStatisticsQuery : IRequest<CompareByYearStatisticsD
 {
     public Guid BerryTypeId { get; set; }
     public required List<int> Years { get; set; }
+    public int StartMonth { get; set; }
+    public int EndMonth { get; set; }
 }
