@@ -16,15 +16,15 @@ public class GetCompareByYearStatisticsQueryHandler(BerrySystemDbContext berrySy
         var matchedHarvestData = await MatchHarvests(request, cancellationToken);
         var matchedSaleData = await MatchSales(request, cancellationToken);
 
-        var groupedHarvestDataByMonth = GroupHarvestDataByMonth(matchedHarvestData, request.Years);
-        var groupedSaleDataByMonth = GroupSaleDataByMonth(matchedSaleData, request.Years);
+        var groupedHarvestDataByYearAndDay = GroupHarvestDataByYearAndDay(matchedHarvestData, request.Years);
+        var groupedByYearAndDayByYearAndDay = GroupSaleDataByYearAndDay(matchedSaleData, request.Years);
 
         const int monthStartDay = 1;
         var monthEndDay = DateTime.DaysInMonth(0001, request.EndMonth);
 
-        var filteredHarvestsByMonth = FilterGroupByMonth(request, monthStartDay, monthEndDay, groupedHarvestDataByMonth);
-        var filteredSalesByMonth = FilterGroupByMonth(request, monthStartDay, monthEndDay, groupedSaleDataByMonth.groupedSalesByYear);
-        var filteredRevenueByMonth = FilterGroupByMonth(request, monthStartDay, monthEndDay, groupedSaleDataByMonth.groupedRevenueByYear);
+        var filteredHarvestsByMonth = FilterGroupByMonth(request, monthStartDay, monthEndDay, groupedHarvestDataByYearAndDay);
+        var filteredSalesByMonth = FilterGroupByMonth(request, monthStartDay, monthEndDay, groupedByYearAndDayByYearAndDay.groupedSalesByYear);
+        var filteredRevenueByMonth = FilterGroupByMonth(request, monthStartDay, monthEndDay, groupedByYearAndDayByYearAndDay.groupedRevenueByYear);
 
         return new CompareByYearStatisticsDto
         {
@@ -54,7 +54,7 @@ public class GetCompareByYearStatisticsQueryHandler(BerrySystemDbContext berrySy
             .ToListAsync(cancellationToken);
     }
     
-    private static List<Dictionary<string, string>> GroupHarvestDataByMonth(List<Domain.Entities.Harvest> matchedHarvestData, List<int> years)
+    private static List<Dictionary<string, string>> GroupHarvestDataByYearAndDay(List<Domain.Entities.Harvest> matchedHarvestData, List<int> years)
     {
         var harvestsByDate = matchedHarvestData
             .GroupBy(h => h.EventTime.Date)
@@ -86,7 +86,7 @@ public class GetCompareByYearStatisticsQueryHandler(BerrySystemDbContext berrySy
     }
     
     private static (List<Dictionary<string, string>> groupedSalesByYear, List<Dictionary<string, string>> groupedRevenueByYear)
-        GroupSaleDataByMonth(List<Domain.Entities.Sale> matchedSaleData, List<int> years)
+        GroupSaleDataByYearAndDay(List<Domain.Entities.Sale> matchedSaleData, List<int> years)
     {
         var salesByDate = matchedSaleData
             .GroupBy(s => s.EventTime.Date)
