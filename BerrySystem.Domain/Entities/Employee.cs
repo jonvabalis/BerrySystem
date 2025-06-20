@@ -8,4 +8,5 @@ public class Employee : Entity
     public required string PhoneNumber { get; set; }
     public DateTime Birthday { get; set; }
     public required string Password { get; set; }
+    public bool IsActive { get; set; } = false;
 }

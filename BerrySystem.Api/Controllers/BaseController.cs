@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BerrySystem.Api.Controllers;
 
+// [Authorize]
 [ApiController]
 [Route("/api/[controller]")]
 public class BaseController : ControllerBase

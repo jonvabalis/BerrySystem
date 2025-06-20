@@ -1,3 +1,4 @@
+using System.Text;
 using BerrySystem.Core.Commands;
 using BerrySystem.Core.Services;
 using BerrySystem.Core.Services.Interfaces;
@@ -5,7 +6,9 @@ using BerrySystem.Core.Validation;
 using BerrySystem.Infrastructure;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,9 +29,28 @@ builder.Services.AddDbContext<BerrySystemDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddSerilog()));
 });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["JwtSettings:Audience"],
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretToken"]!)),
+            ValidateIssuerSigningKey = true,
+            ClockSkew = TimeSpan.Zero
+        };
+        
+    });
 
 builder.Services.AddScoped<DbContext, BerrySystemDbContext>();
 builder.Services.AddScoped<IStatisticsHelperService, StatisticsHelperService>();
+builder.Services.AddTransient<IPasswordHasherService, PasswordHasherService>();
+builder.Services.AddSingleton<IJwtService, JwtService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -40,7 +62,8 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
