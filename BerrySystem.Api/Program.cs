@@ -59,8 +59,11 @@ builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
-builder.WebHost.UseUrls($"http://+:{port}");
+if (builder.Environment.IsProduction())
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
+    builder.WebHost.UseUrls($"http://+:{port}");    
+}
 
 builder.Services.AddCors(options =>
 {
