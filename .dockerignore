@@ -1,0 +1,11 @@
+.git
+.gitignore
+README.md
+.dockerignore
+Logs
+.docker
+.gitlab
+.idea
+bin/
+obj/
+appsettings.json
