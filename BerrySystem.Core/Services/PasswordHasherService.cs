@@ -6,7 +6,7 @@ public class PasswordHasherService : IPasswordHasherService
 {
     public string? Hash(string password)
     {
-        var hash = BCrypt.Net.BCrypt.HashPassword(password, 12);
+        var hash = BCrypt.Net.BCrypt.HashPassword(password, 11);
         return hash;
     }
 
