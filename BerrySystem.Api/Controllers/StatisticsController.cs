@@ -32,14 +32,14 @@ public class StatisticsController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpGet("GetCompareByYearStatistics")]
     public async Task<IActionResult> GetCompareByYearStatistics([FromQuery] GetCompareByYearStatisticsQuery query)
     {
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [HttpGet("GetYearsWithData")]
     public async Task<IActionResult> GetYearsWithData([FromQuery] GetYearsWithDataQuery query)
     {

@@ -31,7 +31,7 @@ public class StatisticsHelperService(BerrySystemDbContext berrySystemDbContext) 
         var saleDataSum = new Dictionary<int, SalesSum>();
         await foreach (var sale in berrySystemDbContext.Sales
                            .AsNoTracking()
-                           .Include( s =>  s.BerryType)
+                           .Include(s => s.BerryType)
                            .Where(saleFilter)
                            .AsAsyncEnumerable().WithCancellation(cancellationToken))
         {

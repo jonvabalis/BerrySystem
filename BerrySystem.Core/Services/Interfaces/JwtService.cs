@@ -15,10 +15,10 @@ public class JwtService(IConfiguration configuration) : IJwtService
             new(ClaimTypes.NameIdentifier, employee.Id.ToString()),
             new(ClaimTypes.Name, employee.Email ?? employee.Username!)
         };
-        
+
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(configuration.GetValue<string>("JwtSettings:SecretToken")!));
-        
+
         var tokenDescriptor = new JwtSecurityToken(
             issuer: configuration.GetValue<string>("JwtSettings:Issuer"),
             audience: configuration.GetValue<string>("JwtSettings:Audience"),
@@ -26,7 +26,7 @@ public class JwtService(IConfiguration configuration) : IJwtService
             expires: DateTime.UtcNow.AddMinutes(configuration.GetValue<int>("JwtSettings:ExpiryInMinutes")),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha512)
         );
-        
+
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
     }
 }

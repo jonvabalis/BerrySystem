@@ -28,7 +28,7 @@ public class EmployeeController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
-    
+
     [AllowAnonymous]
     [HttpPost("Login")]
     public async Task<IActionResult> Login(LoginEmployeeCommand command)
@@ -36,7 +36,7 @@ public class EmployeeController : BaseController
         var result = await Mediator.Send(command);
         return Ok(result);
     }
-    
+
     [HttpPost("Activate/{employeeId:guid}")]
     public async Task<IActionResult> Activate(Guid employeeId)
     {
@@ -44,7 +44,7 @@ public class EmployeeController : BaseController
         var result = await Mediator.Send(command);
         return Ok(result);
     }
-    
+
     [HttpGet("GetAllActive")]
     public async Task<IActionResult> GetAllActive([FromQuery] GetAllActiveEmployeesQuery query)
     {

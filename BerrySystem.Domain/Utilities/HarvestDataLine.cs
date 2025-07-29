@@ -10,7 +10,7 @@ public class HarvestDataLine
     public Guid? BerryKindId { get; set; }
     [JsonIgnore]
     public TimeOnly EventTimeRaw { get; init; }
-    
+
     public string EventTime => EventTimeRaw.ToString("HH:mm");
-    
+
 }

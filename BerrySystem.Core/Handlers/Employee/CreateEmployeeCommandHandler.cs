@@ -20,7 +20,7 @@ public class CreateEmployeeCommandHandler(BerrySystemDbContext berrySystemDbCont
                 new ("Login","Email or username already exists")
             });
         }
-        
+
         var isAccountRegistration = request.Password is not null &&
                                     (request.Email ?? request.Username) is not null;
         string? hashedPassword = null;
@@ -28,7 +28,7 @@ public class CreateEmployeeCommandHandler(BerrySystemDbContext berrySystemDbCont
         {
             hashedPassword = passwordHasher.Hash(request.Password!);
         }
-        
+
         var employee = new Domain.Entities.Employee
         {
             FirstName = request.FirstName,

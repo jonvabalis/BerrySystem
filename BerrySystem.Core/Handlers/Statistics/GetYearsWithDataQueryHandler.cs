@@ -18,7 +18,7 @@ public class GetYearsWithDataQueryHandler(BerrySystemDbContext berrySystemDbCont
             .Select(h => h.EventTime.Year)
             .Distinct()
             .ToListAsync(cancellationToken);
-        
+
         return years;
     }
 }

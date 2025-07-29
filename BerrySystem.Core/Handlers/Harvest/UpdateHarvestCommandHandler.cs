@@ -15,15 +15,15 @@ public class UpdateHarvestCommandHandler(BerrySystemDbContext berrySystemDbConte
 
         if (harvest is null)
             throw new Exception($"Harvest with id {command.HarvestId} not found");
-     
+
         var updateHappened = false;
-        
+
         if (command.EmployeeId != harvest.EmployeeId)
         {
             harvest.EmployeeId = command.EmployeeId;
             updateHappened = true;
         }
-        
+
         if (command.BerryKindId != harvest.BerryKind?.Id)
         {
             if (command.BerryKindId == null)
@@ -37,13 +37,13 @@ public class UpdateHarvestCommandHandler(BerrySystemDbContext berrySystemDbConte
 
                 if (berryKind == null)
                     throw new Exception($"BerryType with id {command.BerryKindId} was not found.");
-                    
+
                 harvest.BerryKind = berryKind;
             }
-            
+
             updateHappened = true;
         }
-        
+
         if (!command.Kilograms.Equals(harvest.Kilograms))
         {
             harvest.Kilograms = command.Kilograms;
@@ -54,7 +54,7 @@ public class UpdateHarvestCommandHandler(BerrySystemDbContext berrySystemDbConte
         {
             harvest.LastModifiedAt = DateTime.UtcNow;
         }
-        
+
         var result = await berrySystemDbContext.SaveChangesAsync(cancellationToken);
 
         return result > 0;

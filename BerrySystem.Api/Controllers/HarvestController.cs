@@ -26,14 +26,14 @@ public class HarvestController : BaseController
         var result = await Mediator.Send(command);
         return Ok(result);
     }
-    
+
     [HttpPut("Update")]
     public async Task<IActionResult> Update(UpdateHarvestCommand command)
     {
         var result = await Mediator.Send(command);
         return Ok(result);
     }
-    
+
     [HttpDelete("Delete/{harvestId:guid}")]
     public async Task<IActionResult> Delete(Guid harvestId)
     {
@@ -41,7 +41,7 @@ public class HarvestController : BaseController
         var result = await Mediator.Send(command);
         return Ok(result);
     }
-    
+
     [HttpGet("GetByDate")]
     public async Task<IActionResult> GetByDate([FromQuery] GetHarvestsByDateQuery query)
     {

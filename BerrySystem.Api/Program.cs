@@ -21,7 +21,8 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 builder.Host.UseSerilog((context, services, config) =>
 {
     config.ReadFrom.Configuration(context.Configuration);
-    if (context.HostingEnvironment.IsProduction()) {
+    if (context.HostingEnvironment.IsProduction())
+    {
         config.WriteTo.Console(new Serilog.Formatting.Json.JsonFormatter());
     }
 });
@@ -47,7 +48,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ClockSkew = TimeSpan.Zero
         };
-        
+
     });
 
 builder.Services.AddScoped<DbContext, BerrySystemDbContext>();
@@ -62,7 +63,7 @@ builder.Services.AddSwaggerGen();
 if (builder.Environment.IsProduction())
 {
     var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
-    builder.WebHost.UseUrls($"http://+:{port}");    
+    builder.WebHost.UseUrls($"http://+:{port}");
 }
 
 builder.Services.AddCors(options =>

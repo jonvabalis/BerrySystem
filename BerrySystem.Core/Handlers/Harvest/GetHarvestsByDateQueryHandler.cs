@@ -11,16 +11,16 @@ public class GetHarvestsByDateQueryHandler(BerrySystemDbContext berrySystemDbCon
 {
     public async Task<List<HarvestDataLine>> Handle(GetHarvestsByDateQuery request, CancellationToken cancellationToken)
     {
-        var startDate = new DateTime(request.HarvestDate.Year, 
-            request.HarvestDate.Month, 
-            request.HarvestDate.Day, 
-            0, 0, 0, 0, 0, 
+        var startDate = new DateTime(request.HarvestDate.Year,
+            request.HarvestDate.Month,
+            request.HarvestDate.Day,
+            0, 0, 0, 0, 0,
             DateTimeKind.Utc);
 
         var endDate = startDate.AddDays(1);
-        
+
         var harvests = await berrySystemDbContext.Harvests
-            .Where(h => h.BerryType.Id == request.BerryTypeId && 
+            .Where(h => h.BerryType.Id == request.BerryTypeId &&
                         h.EventTime >= startDate && h.EventTime < endDate)
             .Select(h => new HarvestDataLine
             {

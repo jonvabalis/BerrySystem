@@ -11,16 +11,16 @@ public class GetSalesByDateQueryHandler(BerrySystemDbContext berrySystemDbContex
 {
     public async Task<List<SaleDataLine>> Handle(GetSalesByDateQuery request, CancellationToken cancellationToken)
     {
-        var startDate = new DateTime(request.SaleDate.Year, 
-            request.SaleDate.Month, 
-            request.SaleDate.Day, 
-            0, 0, 0, 0, 0, 
+        var startDate = new DateTime(request.SaleDate.Year,
+            request.SaleDate.Month,
+            request.SaleDate.Day,
+            0, 0, 0, 0, 0,
             DateTimeKind.Utc);
 
         var endDate = startDate.AddDays(1);
-        
+
         var sales = await berrySystemDbContext.Sales
-            .Where(s => s.BerryType.Id == request.BerryTypeId && 
+            .Where(s => s.BerryType.Id == request.BerryTypeId &&
                         s.EventTime >= startDate && s.EventTime < endDate)
             .Select(s => new SaleDataLine
             {

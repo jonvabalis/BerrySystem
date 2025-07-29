@@ -53,7 +53,7 @@ public class GetCompareByYearStatisticsQueryHandler(BerrySystemDbContext berrySy
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
-    
+
     private static List<Dictionary<string, string>> GroupHarvestDataByYearAndDay(List<Domain.Entities.Harvest> matchedHarvestData, List<int> years)
     {
         var harvestsByDate = matchedHarvestData
@@ -84,7 +84,7 @@ public class GetCompareByYearStatisticsQueryHandler(BerrySystemDbContext berrySy
 
         return result;
     }
-    
+
     private static (List<Dictionary<string, string>> groupedSalesByYear, List<Dictionary<string, string>> groupedRevenueByYear)
         GroupSaleDataByYearAndDay(List<Domain.Entities.Sale> matchedSaleData, List<int> years)
     {
@@ -130,13 +130,13 @@ public class GetCompareByYearStatisticsQueryHandler(BerrySystemDbContext berrySy
 
         return (saleKgResult, saleRevResult);
     }
-    
+
     private static List<Dictionary<string, string>> FilterGroupByMonth(GetCompareByYearStatisticsQuery request, int monthStartDay, int monthEndDay,
         List<Dictionary<string, string>> groupedHarvestDataByMonth)
     {
         var startKey = $"{request.StartMonth:D2}-{monthStartDay:D2}";
         var endKey = $"{request.EndMonth:D2}-{monthEndDay:D2}";
-        
+
         var filteredEntries = new List<Dictionary<string, string>>();
         var rangeFound = false;
         foreach (var entry in groupedHarvestDataByMonth)
@@ -145,11 +145,11 @@ public class GetCompareByYearStatisticsQueryHandler(BerrySystemDbContext berrySy
             {
                 rangeFound = true;
             }
-            
+
             if (rangeFound)
             {
                 filteredEntries.Add(entry);
-                
+
                 if (entry["time"] == endKey)
                 {
                     break;

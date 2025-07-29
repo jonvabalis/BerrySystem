@@ -16,7 +16,7 @@ public class CreateBerryKindCommandHandler(BerrySystemDbContext berrySystemDbCon
         {
             throw new NotFoundException("BerryType", request.BerryTypeId);
         }
-        
+
         var berryKind = new Domain.Entities.BerryKind
         {
             Kind = request.Kind,

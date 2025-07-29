@@ -11,5 +11,5 @@ public class CreateEmployeeCommand : IRequest<Guid>
     public string? PhoneNumber { get; set; }
     public DateTime? Birthday { get; set; }
     public string? Password { get; set; }
-    
+
 }

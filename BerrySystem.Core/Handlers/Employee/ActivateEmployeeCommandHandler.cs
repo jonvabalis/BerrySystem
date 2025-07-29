@@ -10,14 +10,14 @@ public class ActivateEmployeeCommandHandler(BerrySystemDbContext berrySystemDbCo
     public async Task<bool> Handle(ActivateEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employee = await berrySystemDbContext.Employees.FindAsync([request.EmployeeId], cancellationToken);
-        
+
         if (employee is null)
         {
-            throw new NotFoundException("Employee",$"{request.EmployeeId}");
+            throw new NotFoundException("Employee", $"{request.EmployeeId}");
         }
-        
+
         employee.IsActive = true;
-        
+
         await berrySystemDbContext.SaveChangesAsync(cancellationToken);
 
         return true;

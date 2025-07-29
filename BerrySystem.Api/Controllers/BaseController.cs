@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BerrySystem.Api.Controllers;
 
-// [Authorize]
+[Authorize]
 [ApiController]
 [Route("/api/[controller]")]
 public class BaseController : ControllerBase
