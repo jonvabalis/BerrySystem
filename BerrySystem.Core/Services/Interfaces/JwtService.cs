@@ -13,7 +13,7 @@ public class JwtService(IConfiguration configuration) : IJwtService
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, employee.Id.ToString()),
-            new(ClaimTypes.Name, employee.Email)
+            new(ClaimTypes.Name, employee.Email ?? employee.Username!)
         };
         
         var key = new SymmetricSecurityKey(

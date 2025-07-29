@@ -13,15 +13,21 @@ public class CreateEmployeeCommandHandler(BerrySystemDbContext berrySystemDbCont
 {
     public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
-        if (await berrySystemDbContext.Employees.AnyAsync(e => e.Email == request.Email, cancellationToken))
+        if (await berrySystemDbContext.Employees.AnyAsync(e => e.Email == request.Email || e.Username == request.Username, cancellationToken))
         {
             throw new ValidationException(new List<ValidationFailure>
             {
-                new ("Login","Email already exists")
+                new ("Login","Email or username already exists")
             });
         }
         
-        var hashedPassword = passwordHasher.Hash(request.Password);
+        var isAccountRegistration = request.Password is not null &&
+                                    (request.Email ?? request.Username) is not null;
+        string? hashedPassword = null;
+        if (isAccountRegistration)
+        {
+            hashedPassword = passwordHasher.Hash(request.Password!);
+        }
         
         var employee = new Domain.Entities.Employee
         {
@@ -30,7 +36,8 @@ public class CreateEmployeeCommandHandler(BerrySystemDbContext berrySystemDbCont
             Email = request.Email,
             PhoneNumber = request.PhoneNumber,
             Birthday = request.Birthday,
-            Password = hashedPassword
+            Password = hashedPassword,
+            Username = request.Username,
         };
 
         await berrySystemDbContext.Employees.AddAsync(employee, cancellationToken);
