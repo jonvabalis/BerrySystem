@@ -13,7 +13,10 @@ public class CreateEmployeeCommandHandler(BerrySystemDbContext berrySystemDbCont
 {
     public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
-        if (await berrySystemDbContext.Employees.AnyAsync(e => e.Email == request.Email || e.Username == request.Username, cancellationToken))
+        if (await berrySystemDbContext.Employees.AnyAsync(e => 
+                (!string.IsNullOrEmpty(request.Username) || !string.IsNullOrEmpty(request.Email)) &&
+                (e.Email == request.Email || e.Username == request.Username),
+                cancellationToken))
         {
             throw new ValidationException(new List<ValidationFailure>
             {
