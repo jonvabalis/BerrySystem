@@ -15,7 +15,7 @@ public class CreateEmployeeCommandHandler(BerrySystemDbContext berrySystemDbCont
     {
         if (await berrySystemDbContext.Employees.AnyAsync(e => 
                 (!string.IsNullOrEmpty(request.Username) || !string.IsNullOrEmpty(request.Email)) &&
-                (e.Email == request.Email || e.Username == request.Username),
+                ((e.Email != null && e.Email == request.Email) || (e.Username != null && e.Username == request.Username)),
                 cancellationToken))
         {
             throw new ValidationException(new List<ValidationFailure>
