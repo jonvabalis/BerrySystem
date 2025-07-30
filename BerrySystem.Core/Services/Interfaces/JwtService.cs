@@ -15,6 +15,7 @@ public class JwtService(IConfiguration configuration) : IJwtService
             new(ClaimTypes.NameIdentifier, employee.Id.ToString()),
             new(ClaimTypes.Name, employee.Email ?? employee.Username!)
         };
+        claims.AddRange(employee.Roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
 
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(configuration.GetValue<string>("JwtSettings:SecretToken")!));

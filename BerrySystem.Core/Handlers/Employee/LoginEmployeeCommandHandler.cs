@@ -16,8 +16,9 @@ public class LoginEmployeeCommandHandler(
 {
     public async Task<AccessTokenUserIdDto?> Handle(LoginEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var employee = await berrySystemDbContext.Employees.
-            FirstOrDefaultAsync(e => e.Email == request.LoginCredential || e.Username == request.LoginCredential, cancellationToken);
+        var employee = await berrySystemDbContext.Employees
+            .Include(e => e.Roles)
+            .FirstOrDefaultAsync(e => e.Email == request.LoginCredential || e.Username == request.LoginCredential, cancellationToken);
 
         if (employee is null || passwordHasher.Verify(request.Password, employee.Password!) is false)
         {
