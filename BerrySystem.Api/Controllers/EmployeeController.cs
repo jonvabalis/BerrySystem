@@ -7,7 +7,7 @@ namespace BerrySystem.Api.Controllers;
 
 public class EmployeeController : BaseController
 {
-    [AllowAnonymous]
+    [Authorize(Roles = "SuperAdmin")]
     [HttpPost("Create")]
     public async Task<IActionResult> Create(CreateEmployeeCommand command)
     {
@@ -37,6 +37,7 @@ public class EmployeeController : BaseController
         return Ok(result);
     }
 
+    [Authorize(Roles = "SuperAdmin,Admin")]
     [HttpPost("Activate/{employeeId:guid}")]
     public async Task<IActionResult> Activate(Guid employeeId)
     {
@@ -60,6 +61,7 @@ public class EmployeeController : BaseController
         return Ok(result);
     }
     
+    [Authorize(Roles = "SuperAdmin")]
     [HttpPost("AddEmployeeRole")]
     public async Task<IActionResult> AddEmployeeRole(AddEmployeeRoleCommand command)
     {
@@ -67,6 +69,7 @@ public class EmployeeController : BaseController
         return Ok(result);
     }
 
+    [Authorize(Roles = "SuperAdmin")]
     [HttpDelete("DeleteEmployeeRole/{employeeId:guid}/{RoleId:guid}")]
     public async Task<IActionResult> DeleteEmployeeRole(Guid employeeId, Guid roleId )
     {
@@ -75,6 +78,7 @@ public class EmployeeController : BaseController
         return Ok(result);
     }
  
+    [Authorize(Roles = "SuperAdmin")]
     [HttpPost("CreateRole")]
     public async Task<IActionResult> Create(CreateRoleCommand command)
     {

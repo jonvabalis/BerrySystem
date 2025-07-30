@@ -1,11 +1,13 @@
 using BerrySystem.Core.Commands;
 using BerrySystem.Core.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BerrySystem.Api.Controllers;
 
 public class SaleController : BaseController
 {
+    [Authorize(Roles = "SuperAdmin,Admin,Employee")]
     [HttpPost("Create")]
     public async Task<IActionResult> Create(CreateSaleCommand command)
     {
@@ -20,6 +22,7 @@ public class SaleController : BaseController
         return Ok(result);
     }
 
+    [Authorize(Roles = "SuperAdmin,Admin,Employee")]
     [HttpPost("CreateBulk")]
     public async Task<IActionResult> CreateBulk(CreateBulkSaleCommand command)
     {
@@ -27,6 +30,7 @@ public class SaleController : BaseController
         return Ok(result);
     }
 
+    [Authorize(Roles = "SuperAdmin,Admin")]
     [HttpPut("Update")]
     public async Task<IActionResult> Update(UpdateSaleCommand command)
     {
@@ -34,6 +38,7 @@ public class SaleController : BaseController
         return Ok(result);
     }
 
+    [Authorize(Roles = "SuperAdmin,Admin")]
     [HttpDelete("Delete/{saleId:guid}")]
     public async Task<IActionResult> Delete(Guid saleId)
     {

@@ -1,11 +1,13 @@
 ﻿using BerrySystem.Core.Commands;
 using BerrySystem.Core.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BerrySystem.Api.Controllers;
 
 public class BerryTypeController : BaseController
 {
+    [Authorize(Roles = "SuperAdmin")]
     [HttpPost("Create")]
     public async Task<IActionResult> Create(CreateBerryTypeCommand command)
     {
