@@ -10,4 +10,5 @@ public class Employee : Entity
     public DateTime? Birthday { get; set; }
     public string? Password { get; set; }
     public bool IsActive { get; set; }
+    public virtual ICollection<Role> Roles { get; set; }
 }

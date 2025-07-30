@@ -51,4 +51,41 @@ public class EmployeeController : BaseController
         var result = await Mediator.Send(query);
         return Ok(result);
     }
+    
+    [HttpGet("GetAllEmployeeRoles/{employeeId:guid}")]
+    public async Task<IActionResult> GetAllEmployeeRoles(Guid employeeId)
+    {
+        var command = new GetAllEmployeeRolesQuery { EmployeeId = employeeId };
+        var result = await Mediator.Send(command);
+        return Ok(result);
+    }
+    
+    [HttpPost("AddEmployeeRole")]
+    public async Task<IActionResult> AddEmployeeRole(AddEmployeeRoleCommand command)
+    {
+        var result = await Mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpDelete("DeleteEmployeeRole/{employeeId:guid}/{RoleId:guid}")]
+    public async Task<IActionResult> DeleteEmployeeRole(Guid employeeId, Guid roleId )
+    {
+        var command = new DeleteEmployeeRoleCommand { EmployeeId = employeeId, RoleId = roleId };
+        var result = await Mediator.Send(command);
+        return Ok(result);
+    }
+ 
+    [HttpPost("CreateRole")]
+    public async Task<IActionResult> Create(CreateRoleCommand command)
+    {
+        var result = await Mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpGet("GetAllRoles")]
+    public async Task<IActionResult> GetAll([FromQuery] GetAllRolesQuery query)
+    {
+        var result = await Mediator.Send(query);
+        return Ok(result);
+    }
 }

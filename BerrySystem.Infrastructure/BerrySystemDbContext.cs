@@ -23,4 +23,5 @@ public class BerrySystemDbContext(DbContextOptions<BerrySystemDbContext> options
     public DbSet<BerryType> BerryTypes { get; set; }
     public DbSet<BerryKind> BerryKinds { get; set; }
     public DbSet<Cost> Costs { get; set; }
+    public DbSet<Role> Roles { get; set; }
 }
